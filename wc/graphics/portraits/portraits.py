@@ -1,3 +1,5 @@
+import os
+
 ORIGINAL_COUNT = 19
 
 id_portrait = {
@@ -107,8 +109,6 @@ id_portrait = {
 }
 
 def get_bin_path(id_):
-    import os
-
     if id_ < ORIGINAL_COUNT:
         subdir = "original"
     else:
@@ -118,7 +118,5 @@ def get_bin_path(id_):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), subdir, name + ".bin")
 
 def get_pal_path(id_):
-    import os
-
     bin_path = get_bin_path(id_)
     return os.path.splitext(bin_path)[0] + ".pal"

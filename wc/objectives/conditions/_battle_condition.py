@@ -1,10 +1,8 @@
-from memory.space import Bank, Write
-import instruction.asm as asm
-from objectives._cached_function import _CachedFunction
+from ...memory.space import Bank, Write
+from ...instruction import asm
+from ...data import event_bit, battle_bit, event_word
 
-import data.event_bit as event_bit
-import data.battle_bit as battle_bit
-import data.event_word as event_word
+from .._cached_function import _CachedFunction
 
 class _Condition(_CachedFunction, asm.JSR):
     def __init__(self, *args, **kwargs):

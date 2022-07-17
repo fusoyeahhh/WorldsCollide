@@ -1,5 +1,4 @@
-from graphics.sprite import Sprite
-from graphics.sprite_tile import SpriteTile
+from .sprite import Sprite
 
 class SpriteFile(Sprite):
     def __init__(self, path, palette):

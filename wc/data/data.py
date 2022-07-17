@@ -1,20 +1,23 @@
-import data.dialogs as dialogs
-import data.spells as spells
-import data.characters as characters
-import data.items as items
-import data.metamorph_groups as metamorph_groups
-import data.maps as maps
-import data.enemies as enemies
-import data.swdtechs as swdtechs
-import data.blitzes as blitzes
-import data.lores as lores
-import data.rages as rages
-import data.dances as dances
-import data.steal as steal
-import data.magiteks as magiteks
-import data.espers as espers
-import data.shops as shops
-import data.coliseum as coliseum
+from . import (
+    dialogs,
+    metamorph_groups,
+    swdtechs,
+    blitzes,
+    rages,
+    dances,
+    steal,
+    magiteks,
+    coliseum,
+    map,
+)
+from .character import characters
+from .enemy import enemies
+from .lore import lores
+from .spell import spells
+from .item import items
+from .esper import espers
+from .shop import shops
+
 
 class Data:
     def __init__(self, rom, args):
@@ -32,7 +35,7 @@ class Data:
         self.metamorph_groups = metamorph_groups.MetamorphGroups(rom)
         self.metamorph_groups.mod()
 
-        self.maps = maps.Maps(rom, args, self.items)
+        self.maps = map.Maps(rom, args, self.items)
         self.maps.mod(self.characters)
 
         self.enemies = enemies.Enemies(rom, args)

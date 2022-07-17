@@ -1,11 +1,11 @@
+from ..memory.space import Reserve
+from ..instruction import asm
+
 from .auto_sprint import AutoSprint
 from .scan_all import ScanAll
 from .random_rng import RandomRNG
 from .permadeath import Permadeath
 from .y_npc import YNPC
-
-from ..memory.space import Reserve
-from ..instruction import asm
 
 __all__ = ["Settings"]
 class Settings:

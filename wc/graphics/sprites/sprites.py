@@ -1,3 +1,5 @@
+import os
+
 ORIGINAL_COUNT = 22
 
 id_sprite = {
@@ -158,8 +160,6 @@ id_sprite = {
 }
 
 def get_path(id_):
-    import os
-
     if id_ < ORIGINAL_COUNT:
         subdir = "original"
     else:

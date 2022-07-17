@@ -1,3 +1,6 @@
+from ..memory.space import Bank, Reserve, Write
+from ..instruction import asm
+
 CHECKPOINT_BANQUET = 0 # used for narshe checkpoint and emperor's banquet
 NARSHE_CHECKPOINT = 1
 CHARACTERS_AVAILABLE = 2 # custom
@@ -16,9 +19,6 @@ def address(event_word):
     return 0x1fc2 + event_word * 2
 
 def _init_event_words_mod():
-    from memory.space import Bank, Reserve, Write
-    import instruction.asm as asm
-
     # initialize custom event words to zero
     # this is done before pregame menu so no objectives shown as complete
     src = [

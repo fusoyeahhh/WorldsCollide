@@ -1,3 +1,5 @@
+# FIXME: more use of modules as global storage
+"""
 def __init__():
     from data.dialogs.dialogs import Dialogs
     dialogs = Dialogs()
@@ -11,3 +13,4 @@ def __init__():
     module.OBJECTIVES = Dialogs.OBJECTIVES
     module.BATTLE_OBJECTIVES = Dialogs.BATTLE_OBJECTIVES
 __init__()
+"""

@@ -1,5 +1,13 @@
-from data.rage import Rage
-from data.structures import DataBits, DataArray
+import random
+
+from ..memory.space import Reserve
+from ..instruction import asm
+
+from .rage import Rage
+from .structures import DataBits, DataArray
+
+#from log import section
+
 
 class Rages():
     RAGE_COUNT = 256 # 255 available
@@ -12,7 +20,6 @@ class Rages():
 
     ATTACKS_DATA_START = 0xf4600
     ATTACKS_DATA_END = 0xf47ff
-    ATTACKS_DATA_SIZE = 2
 
     def __init__(self, rom, args, enemies):
         self.rom = rom
@@ -20,7 +27,7 @@ class Rages():
         self.enemies = enemies
 
         self.init_data = DataBits(self.rom, self.INITIAL_RAGES_START, self.INITIAL_RAGES_END)
-        self.attack_data = DataArray(self.rom, self.ATTACKS_DATA_START, self.ATTACKS_DATA_END, self.ATTACKS_DATA_SIZE)
+        self.attack_data = DataArray(self.rom, self.ATTACKS_DATA_START, self.ATTACKS_DATA_END, Rage.ATTACKS_DATA_SIZE)
 
         self.rages = []
         for rage_index in range(len(self.attack_data)):
@@ -28,8 +35,6 @@ class Rages():
             self.rages.append(rage)
 
     def start_random_rages(self):
-        import random
-
         self.init_data.clear_all()
         possible_rages = [x for x in range(self.RAGE_COUNT) if x != self.PUGS_RAGE_ID]
 
@@ -39,9 +44,6 @@ class Rages():
             self.init_data[rage_id] = 1
 
     def no_leap(self):
-        from memory.space import Reserve
-        import instruction.asm as asm
-
         space = Reserve(0x23b71, 0x23b8f, "rages leap command", asm.NOP())
         space.add_label("LEAP_MISS", 0x23bc0)
         space.write(
@@ -91,8 +93,6 @@ class Rages():
         self.attack_data.write()
 
     def log(self):
-        from log import section
-
         lcolumn = []
         rcolumn = []
         for rage_index in range(len(self.init_data)):

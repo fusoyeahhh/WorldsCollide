@@ -1,5 +1,7 @@
-from data.menu_character_sprite import MenuCharacterSprite
-from data.structures import DataArray, DataPointers
+from .menu_character_sprite import MenuCharacterSprite
+from .structures import DataArray, DataPointers
+from .character import Character
+
 
 # each menu sprite contains data about a pose and how to draw it
 # for the main playable characters (0-13) the menu sprite data alternates betwen standing and hands up (both left facing)
@@ -28,16 +30,14 @@ class MenuCharacterSprites:
             menu_sprite = MenuCharacterSprite(sprite_index, self.oam_data[sprite_index])
             self.sprites.append(menu_sprite)
 
-        from data.characters import Characters
-
         self.standing_sprites = []
-        for sprite_index in range(Characters.CHARACTER_COUNT):
+        for sprite_index in range(Character.CHARACTER_COUNT):
             self.standing_sprites.append(self.sprites[sprite_index * 2])
-        for sprite_index in range(Characters.CHARACTER_COUNT * 2, len(self.sprites)):
+        for sprite_index in range(Character.CHARACTER_COUNT * 2, len(self.sprites)):
             self.standing_sprites.append(self.sprites[sprite_index])
 
         self.victory_sprites = []
-        for sprite_index in range(1, Characters.CHARACTER_COUNT * 2, 2):
+        for sprite_index in range(1, Character.CHARACTER_COUNT * 2, 2):
             self.victory_sprites.append(self.sprites[sprite_index])
 
     def set_sprite_address(self, character_id, address):
@@ -48,8 +48,7 @@ class MenuCharacterSprites:
 
         self.standing_sprites[character_id].set_palette(palette_id)
 
-        from data.characters import Characters
-        if character_id < Characters.CHARACTER_COUNT:
+        if character_id < Character.CHARACTER_COUNT:
             self.victory_sprites[character_id].set_palette(palette_id)
 
     def write(self):

@@ -1,6 +1,6 @@
-from memory.space import Reserve
-import instruction.asm as asm
-import args
+from ..memory.space import Reserve
+from ..instruction import asm
+from .. import args
 
 class _NoExpPartyDivide:
     def __init__(self):

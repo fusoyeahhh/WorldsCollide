@@ -1,5 +1,12 @@
-from event.event import *
-from event.veldt_helpers import *
+import random
+
+from ..instruction import battle_event, c0
+from ..data import event_word
+from ..memory.space import START_ADDRESS_SNES
+
+from .event import *
+from .veldt_helpers import *
+
 
 # NOTE: if gau in menus he has been recruited (will not change based on leap status)
 #       if gau not in menus he has not been recruited yet
@@ -38,7 +45,6 @@ class Veldt(Event):
             self.char = self.reward.id
             self.sprite = self.reward.id
         else:
-            import random
             self.sprite = random.choice([14, 15, 19, 20])
 
         self.leap_mod()
@@ -53,7 +59,6 @@ class Veldt(Event):
         self.log_reward(self.reward)
 
     def leap_mod(self):
-        import data.event_word as event_word
         characters_available_address = event_word.address(event_word.CHARACTERS_AVAILABLE)
 
         space = Reserve(0x21d0d, 0x21d11, "veldt if gau not available script command", asm.NOP())
@@ -266,8 +271,6 @@ class Veldt(Event):
         space = Reserve(0x248dc, 0x248dd, "veldt gau appears after battle load battle event id", asm.NOP())
 
     def add_gau_party(self):
-        import data.event_word as event_word
-
         space = Allocate(Bank.C2, 56, "veldt recruit gau/char function", asm.NOP())
         recruit_function = space.next_address
         space.write(
@@ -277,9 +280,6 @@ class Veldt(Event):
             "RECRUIT_CHAR",
         )
         if self.reward.type == RewardType.CHARACTER:
-            import instruction.c0 as c0
-            from memory.space import START_ADDRESS_SNES
-
             recruit_character_address = START_ADDRESS_SNES + c0.recruit_character
             space.write(
                 asm.LDA(ram_event_bit(event_bit.VELDT_REWARD_OBTAINED), asm.IMM8),
@@ -360,8 +360,6 @@ class Veldt(Event):
         )
 
     def battle_events_mod(self):
-        import instruction.battle_event as battle_event
-
         # this dialog is shared between char and gau appearing after battle so remove the name
         # but keep the dialog to prevent freezes/bugs from acting too soon after they appear
         uwaoo_dialog_id = 254

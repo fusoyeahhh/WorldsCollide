@@ -1,4 +1,6 @@
-from event.event import *
+import random
+
+from .event import *
 
 class CollapsingHouse(Event):
     def name(self):
@@ -37,8 +39,6 @@ class CollapsingHouse(Event):
 
     def timer_mod(self):
         if self.args.event_timers_random:
-            import random
-
             # randomize timer between 2 and 5 minutes
             seconds = random.randint(120, 300)
 

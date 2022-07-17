@@ -1,4 +1,7 @@
-from constants.objectives import MAX_OBJECTIVES, MAX_CONDITIONS
+from ..constants.objectives import MAX_OBJECTIVES, MAX_CONDITIONS
+from ..constants.objectives.results import id_type as result_id_type
+from ..constants.objectives.conditions import types as condition_types
+
 
 def parse(parser):
     objectives = parser.add_argument_group("Objectives")
@@ -7,10 +10,6 @@ def parse(parser):
                                 type = str, help = "Objective " + chr(ord('A') + oi))
 
 def process(args):
-    from constants.objectives.results import types as result_types
-    from constants.objectives.results import id_type as result_id_type
-    from constants.objectives.conditions import types as condition_types
-
     class Result:
         def __init__(self, _id, name, format_string, value_range, args):
             self.id = _id
@@ -63,7 +62,6 @@ def process(args):
 
             for arg in result_args:
                 if arg not in result_type.value_range:
-                    import sys
                     args.parser.print_usage()
                     print(f"{sys.argv[0]}: error: {result_type.name}: invalid argument {arg}")
                     sys.exit(1)

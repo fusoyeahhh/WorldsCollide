@@ -1,6 +1,8 @@
-import data.text as text
+from . import text
 
 class Dance:
+    NAME_SIZE = 12
+
     def __init__(self, id, data, name_data):
         self.id = id
         self.dances = data
@@ -10,9 +12,8 @@ class Dance:
         return self.dances
 
     def name_data(self):
-        from data.dances import Dances
         data = text.get_bytes(self.name, text.TEXT2)
-        data.extend([0xff] * (Dances.NAME_SIZE - len(data)))
+        data.extend([0xff] * (self.NAME_SIZE - len(data)))
         return data
 
     def get_name(self):

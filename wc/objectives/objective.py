@@ -1,9 +1,16 @@
-from objectives.results import results
-from objectives.conditions import conditions
-from objectives._conditions_complete import ConditionsComplete
-from objectives._check_complete import CheckComplete
+from . import results
+from . import conditions
+from ._conditions_complete import ConditionsComplete
+from ._check_complete import CheckComplete
 
-import args
+from ..constants.objectives.results import category_types
+from ..constants.objectives.results import name_category
+from ..constants.objectives.results import types as result_types
+from ..constants.objectives.conditions import types as condition_types
+from ..constants.objectives.conditions import name_type
+from ..constants.objectives.condition_bits import quest_bit
+
+#import args
 import random
 
 class Objective:
@@ -33,14 +40,10 @@ class Objective:
             self.result = results[arg_result.name](*arg_result.args)
             return
 
-        from constants.objectives.results import category_types
-        from constants.objectives.results import name_category
-        from constants.objectives.results import types
-
         category = name_category[arg_result.name]
         if category == "Random":
             possible_types = []
-            for _type in types:
+            for _type in result_types:
                 if _type.format_string != "Random":
                     possible_types.append(_type)
         else:
@@ -56,15 +59,12 @@ class Objective:
         self.result = results[random_type.name](*random_args)
 
     def _init_conditions(self, arg_conditions):
-        from constants.objectives.conditions import types
-        from constants.objectives.conditions import name_type
-
         self.conditions = [None] * len(arg_conditions)
 
         # prevent random duplicate/redundant types/values
         # e.g. requiring celes twice or 2 characters and 4 characters for the same objective
 
-        possible_random_types = [_type.name for _type in types if _type.name != "None" and _type.name != "Random"]
+        possible_random_types = [_type.name for _type in condition_types if _type.name != "None" and _type.name != "Random"]
         possible_random_values = {}
         for type_name in possible_random_types:
             _type = name_type[type_name]
@@ -120,9 +120,6 @@ class Objective:
 
     @classmethod
     def _init_suplex_train_quest_value(cls):
-        from constants.objectives.conditions import name_type
-        from constants.objectives.condition_bits import quest_bit
-
         cls.suplex_train_quest_name = "Suplex A Train"
         for value in name_type["Quest"].value_range:
             if value != 'r' and quest_bit[value].name == cls.suplex_train_quest_name:

@@ -1,8 +1,15 @@
-from data.natural_spell import NaturalSpell
-from data.structures import DataArray
+import random
 
-from memory.space import Bank, Reserve, Allocate
-import instruction.asm as asm
+from ..memory.space import Bank, Reserve, Allocate
+from ..instruction import asm
+
+from .natural_spell import NaturalSpell
+from .structures import DataArray
+from .spell.spells import Spells
+from .character import Character
+
+#from log import section, format_option
+
 
 class NaturalMagic:
     TERRA_SPELL_DATA_START = 0x2ce3c0
@@ -11,16 +18,14 @@ class NaturalMagic:
     CELES_SPELL_DATA_START = 0x2ce3e0
     CELES_SPELL_DATA_END = 0x2ce3ff
 
-    SPELL_DATA_SIZE = 2
-
     def __init__(self, rom, args, characters, spells):
         self.rom = rom
         self.args = args
         self.characters = characters
         self.spells = spells
 
-        self.terra_spell_data = DataArray(self.rom, self.TERRA_SPELL_DATA_START, self.TERRA_SPELL_DATA_END, self.SPELL_DATA_SIZE)
-        self.celes_spell_data = DataArray(self.rom, self.CELES_SPELL_DATA_START, self.CELES_SPELL_DATA_END, self.SPELL_DATA_SIZE)
+        self.terra_spell_data = DataArray(self.rom, self.TERRA_SPELL_DATA_START, self.TERRA_SPELL_DATA_END, Spells.SPELL_DATA_SIZE)
+        self.celes_spell_data = DataArray(self.rom, self.CELES_SPELL_DATA_START, self.CELES_SPELL_DATA_END, Spells.SPELL_DATA_SIZE)
 
         self.terra_spells = []
         for spell_index, spell_data in enumerate(self.terra_spell_data):
@@ -39,9 +44,6 @@ class NaturalMagic:
 
     def event_check_mod(self):
         # modify event code to also check for swdtech/blitz if character can learn natural magic
-
-        from data.spells import Spells
-
         def call_check_spell_learn(space, spell_check_address, learner, unique_label):
             space.write(
                 asm.CMP(learner, asm.IMM8),
@@ -113,9 +115,7 @@ class NaturalMagic:
             )
 
     def mod_learners(self):
-        import random
-        from data.characters import Characters
-        possible_learners = list(range(Characters.CHARACTER_COUNT - 2)) # exclude gogo/umaro
+        possible_learners = list(range(Character.CHARACTER_COUNT - 2)) # exclude gogo/umaro
 
         if self.args.natural_magic1 == "random":
             self.learner1 = random.choice(possible_learners)
@@ -185,7 +185,6 @@ class NaturalMagic:
         self.terra_spells[-1].level = 0
 
     def randomize_levels1(self):
-        import random
         levels = random.sample(range(1, 100), len(self.terra_spells))
         sorted_levels = sorted(levels)
 
@@ -193,7 +192,6 @@ class NaturalMagic:
             spell.level = sorted_levels[index]
 
     def randomize_levels2(self):
-        import random
         levels = random.sample(range(1, 100), len(self.celes_spells))
         sorted_levels = sorted(levels)
 
@@ -223,8 +221,6 @@ class NaturalMagic:
                 self.randomize_spells2()
 
     def log(self):
-        from log import section, format_option
-
         lcolumn = [self.learner1_name]
         if self.args.natural_magic1:
             for spell in self.terra_spells:

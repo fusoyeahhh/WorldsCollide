@@ -1,4 +1,18 @@
-from instruction.field.instructions import *
-from instruction.field.functions import *
-from instruction.field.custom import *
-from instruction.field.y_npc import *
+RETURN = 0xa5eb3    # return command, used for branching
+END = 0xa5eb4       # end command, used for branching
+GAME_OVER = 0xce566 # black screen with character -> title screen
+
+NOT_ENOUGH_MONEY = 0xb69ff
+HEAL_PARTY_HP_MP_STATUS = 0xacfbd
+FADE_IN_SCREEN_AND_GATHER_AFTER_INN = 0xacf9b
+CREATE_AVAILABLE_CHARACTERS = 0xac90b
+DELETE_CHARACTERS_NOT_IN_ANY_PARTY = 0xacca4
+REMOVE_ALL_CHARACTERS_FROM_ALL_PARTIES = 0xaf61a
+HIDE_ALL_PARTY_MEMBERS = 0xb39ac
+SHOW_ALL_PARTY_MEMBERS = 0xb39b5
+HIDE_PARTY_MEMBERS_EXCEPT_LEADER = 0xacb95
+UPDATE_LEADER_AND_SHOW_ALL_PARTY_MEMBERS = 0xac766
+ENABLE_COLLISIONS_FOR_PARTY_MEMBERS = 0xb2e2b
+DISABLE_COLLISIONS_FOR_PARTY_MEMBERS = 0xb2e34
+RETURN_ALL_PARTIES_TO_FALCON = 0xc2109
+UPDATE_PARTY_SIZE_EVENT_BITS = 0xac5c1

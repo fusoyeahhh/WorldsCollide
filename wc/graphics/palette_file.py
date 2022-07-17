@@ -1,4 +1,4 @@
-from graphics.palette import Palette
+from .palette import Palette
 
 class PaletteFile(Palette):
     def __init__(self, path):

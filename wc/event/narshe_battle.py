@@ -1,4 +1,4 @@
-from event.event import *
+from .event import *
 
 class NarsheBattle(Event):
     def name(self):

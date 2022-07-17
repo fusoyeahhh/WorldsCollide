@@ -1,9 +1,11 @@
-from constants.entities import name_id
+from typing import NamedTuple
+import hashlib
+
+from .constants.entities import name_id
 HASH_CHARACTERS = [name_id[x] for x in ["General Leo", "Banon/Duncan", "Esper Terra", "Merchant"]]
 # the game reserves space for 22 sprites (14 main characters + imp/leo/banon/ghost/merchant/etc...)
 # overwrite some memory reserved for 4 chars which don't appear on save/load/shop/coliseum/party select screens
 
-from typing import NamedTuple
 HashSprite = NamedTuple("HashSprite", [("name", str), ("sprite_address", int), ("palette", int), ("y_offset", int)])
 
 hash_sprites = [
@@ -53,7 +55,6 @@ hash_sprites = [
 ]
 
 def generate_hash(string):
-    import hashlib
     hash_string = hashlib.sha256(string.encode('utf-8')).hexdigest()
 
     hash_result = []

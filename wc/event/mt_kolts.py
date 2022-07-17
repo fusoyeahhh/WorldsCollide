@@ -1,4 +1,7 @@
-from event.event import *
+from ..data.map.map_event import MapEvent
+
+from .event import *
+
 
 class MtKolts(Event):
     def name(self):
@@ -124,7 +127,6 @@ class MtKolts(Event):
         space = Write(Bank.CA, src, "mt kolts exit move airship")
         exit_move_airship = space.start_address
 
-        from data.map_event import MapEvent
         self.maps.delete_short_exit(0x64, 7, 13)
         new_event = MapEvent()
         new_event.x = 7

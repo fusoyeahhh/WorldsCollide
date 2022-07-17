@@ -1,6 +1,8 @@
-from memory.rom import ROM
-from memory.heap import Heap
-from memory.label import Label, LabelPointer
+from bisect import bisect
+
+from ..utils.flatten import flatten
+from .heap import Heap
+from .label import Label, LabelPointer
 
 from enum import IntEnum
 BANK_SIZE = 0x10000
@@ -9,6 +11,7 @@ Bank = IntEnum("Bank", [(f"{value:X}", (value - 0xc0) * BANK_SIZE) for value in 
 START_ADDRESS_SNES = 0xc00000
 
 class Space():
+    # FIXME: This acts like a module-level global variable which gets carried around *everywhere*
     rom = None
     heaps = { bank : Heap() for bank in Bank }
     spaces = []
@@ -30,7 +33,6 @@ class Space():
         self.label_pointers = []
 
         # check if space conflicts with any existing spaces
-        from bisect import bisect
         dest_index = bisect(self.spaces, self)
         if dest_index < len(self.spaces) and self.end_address >= self.spaces[dest_index].start_address:
             message = str(self) + " conflicts with existing spaces:\n"
@@ -75,7 +77,6 @@ class Space():
         return self._description
 
     def write(self, *values):
-        from utils.flatten import flatten
         values = flatten(values)
         values = self._invoke_callables(values)
         values = self._parse_labels(values)
@@ -128,7 +129,6 @@ class Space():
         return label_pointer # return a new pointer to a new label
 
     def _invoke_callables(self, values):
-        from utils.flatten import flatten
         result = []
         index = 0
         for value in values:
@@ -280,7 +280,6 @@ def Free(start_address, end_address):
     heap.free(start_address, end_address)
 
 def Write(destination, data, description):
-    from utils.flatten import flatten
 
     size = 0
     data = flatten(data)

@@ -1,4 +1,4 @@
-from event.event import *
+from .event import *
 
 class AncientCastle(Event):
     def name(self):

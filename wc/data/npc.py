@@ -1,4 +1,6 @@
-import data.direction as direction
+from . import direction
+from ..instruction.event import EVENT_CODE_START
+
 
 class NPC():
     DATA_SIZE = 0x09
@@ -95,7 +97,6 @@ class NPC():
         return data
 
     def set_event_address(self, address):
-        from instruction.event import EVENT_CODE_START
         self.event_address = address - EVENT_CODE_START
 
     def print(self):

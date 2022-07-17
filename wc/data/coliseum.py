@@ -1,4 +1,8 @@
-from data.match import Match
+import random
+
+from .match import Match
+
+#from log import section
 
 class Coliseum():
     MATCH_COUNT = 256
@@ -25,7 +29,6 @@ class Coliseum():
         opponents = []
         for match in self.matches:
             opponents.append(match.opponent)
-        import random
         random.shuffle(opponents)
         for match_index, match in enumerate(self.matches):
             match.opponent = opponents[match_index]
@@ -39,7 +42,6 @@ class Coliseum():
         for match in self.matches:
             rewards.append(match.reward)
 
-        import random
         random.shuffle(rewards)
         for match_index, match in enumerate(self.matches):
             match.reward = rewards[match_index]
@@ -49,7 +51,6 @@ class Coliseum():
             match.reward = self.items.get_random()
 
     def remove_excluded_items(self):
-        import random
 
         exclude = self.items.get_excluded()
         if self.args.coliseum_no_exp_eggs:
@@ -67,7 +68,6 @@ class Coliseum():
         for match in self.matches:
             match.reward_hidden = 0
 
-        import random
         number_visible = random.randint(self.args.coliseum_rewards_visible_random_min,
                                         self.args.coliseum_rewards_visible_random_max)
         number_hidden = self.items.ITEM_COUNT - number_visible - 1
@@ -92,7 +92,6 @@ class Coliseum():
             self.randomize_rewards_hidden()
 
     def log(self):
-        from log import section
         section("Coliseum", self.formatted_rows(), [])
 
     def print(self):

@@ -1,7 +1,12 @@
-from memory.space import START_ADDRESS_SNES, Bank, Reserve, Allocate, Write, Read
-import instruction.asm as asm
-import args
-import random
+#import random
+
+from ..data.bosses import final_battle_formation_name
+from ..data.bosses import dragon_formation_name
+from ..data.bosses import normal_formation_name
+
+from ..memory.space import START_ADDRESS_SNES, Bank, Reserve, Allocate, Write, Read
+from . import asm
+#import args
 
 def _divide_mod():
     # 16 bit a = 16 bit a // 8 bit x
@@ -56,8 +61,6 @@ def _set_gray_text_color_mod():
 set_gray_text_color = _set_gray_text_color_mod()
 
 def _boss_formations_mod():
-    from data.bosses import normal_formation_name
-
     bosses_table = []
     for formation in normal_formation_name:
         bosses_table.append(
@@ -71,8 +74,6 @@ def _boss_formations_mod():
 boss_formations, boss_formations_size = _boss_formations_mod()
 
 def _dragon_formations_mod():
-    from data.bosses import dragon_formation_name
-
     dragons_table = []
     for formation in dragon_formation_name:
         dragons_table.append(
@@ -86,8 +87,6 @@ def _dragon_formations_mod():
 dragon_formations, dragon_formations_size = _dragon_formations_mod()
 
 def _final_battle_formations_mod():
-    from data.bosses import final_battle_formation_name
-
     final_battles_table = []
     for formation in final_battle_formation_name:
         final_battles_table.append(

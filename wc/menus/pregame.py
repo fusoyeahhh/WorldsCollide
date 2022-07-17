@@ -1,5 +1,6 @@
-from memory.space import Bank, Write, Reserve, Allocate, Read
-import instruction.asm as asm
+from ..memory.space import Bank, Write, Reserve, Allocate, Read
+from ..instruction import asm
+from ..data import text
 
 class PreGameMenu:
     MENU_NUMBER = 9
@@ -11,8 +12,6 @@ class PreGameMenu:
         self.mod()
 
     def draw_options_mod(self):
-        import data.text as text
-
         text_positions = [
             ("New Game", 0x798f),
             ("Objectives", 0x7a0f),

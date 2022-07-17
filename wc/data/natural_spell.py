@@ -1,4 +1,5 @@
 class NaturalSpell:
+    SPELL_DATA_SIZE = 2
     def __init__(self, id, data):
         self.id = id
 
@@ -6,8 +7,7 @@ class NaturalSpell:
         self.level = data[1]
 
     def data(self):
-        from data.natural_magic import NaturalMagic
-        data = [0x00] * NaturalMagic.SPELL_DATA_SIZE
+        data = [0x00] * self.SPELL_DATA_SIZE
 
         data[0] = self.spell
         data[1] = self.level

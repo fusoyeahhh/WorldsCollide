@@ -1,8 +1,13 @@
-from memory.space import Bank, START_ADDRESS_SNES, Reserve, Write, Read
-from instruction.event import _Instruction, _Branch
-import instruction.asm as asm
-import instruction.c0 as c0
-from enum import IntEnum
+#from enum import IntEnum
+
+from ...memory.space import Bank, START_ADDRESS_SNES, Reserve, Write, Read
+from ...data import event_bit
+from ...data import event_word
+
+from .. import asm
+from .. import c0
+from ..event import _Instruction, _Branch
+
 
 def _set_opcode_address(opcode, address):
     FIRST_OPCODE = 0x35
@@ -13,7 +18,6 @@ def _set_opcode_address(opcode, address):
     )
 
 def _add_esper_increment():
-    import data.event_word as event_word
     src = [
         asm.INC(event_word.address(event_word.ESPERS_FOUND), asm.ABS),
         Read(0xadd4, 0xadd6),   # advance event script
@@ -50,7 +54,6 @@ class ToggleWorlds(_Instruction):
 
 class LoadEsperFound(_Instruction):
     def __init__(self, esper):
-        import data.event_bit as event_bit
         result_byte = event_bit.address(event_bit.multipurpose(0))
         src = [
             asm.LDA(0xeb, asm.DIR),

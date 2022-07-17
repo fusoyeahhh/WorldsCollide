@@ -1,8 +1,8 @@
-from data.swdtech import SwdTech
-from data.structures import DataArray
+from ..memory.space import Bank, Reserve, Allocate, Write, START_ADDRESS_SNES
+from ..instruction import asm, c0
 
-from memory.space import Bank, Reserve, Allocate, Write
-import instruction.asm as asm
+from .swdtech import SwdTech
+from .structures import DataArray
 
 class SwdTechs:
     NAMES_START = 0x0f3c40
@@ -30,8 +30,6 @@ class SwdTechs:
         self.learners_table_end = self.learners_table + len(self.learners)
 
     def write_is_learner(self):
-        import instruction.c0 as c0
-
         src = [
             asm.PHY(),
             asm.LDX(self.learners_table_end, asm.IMM16),# offset in bank to last learner in table + 1
@@ -44,9 +42,6 @@ class SwdTechs:
         self.is_learner_function = space.start_address_snes
 
     def event_check_mod(self):
-        from memory.space import START_ADDRESS_SNES
-        import instruction.c0 as c0
-
         learn_swdtechs = 0x0a1da
         character_recruited = c0.character_recruited + START_ADDRESS_SNES
 

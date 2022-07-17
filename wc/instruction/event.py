@@ -1,10 +1,12 @@
+from ..utils.flatten import flatten
+from ..data import direction
+
 EVENT_CODE_START = 0x0a0000
 
 class _Instruction:
     def __init__(self, opcode, *args):
         self.opcode = opcode
 
-        from utils.flatten import flatten
         self.args = flatten(args)
 
     def __len__(self):
@@ -68,15 +70,14 @@ class _LoadMap(_Instruction):
         self.x = x
         self.y = y
 
-        import data.direction
         map_dir_music = map_id
-        if direction == data.direction.UP:
+        if direction == direction.UP:
             map_dir_music |= 0x0000
-        elif direction == data.direction.RIGHT:
+        elif direction == direction.RIGHT:
             map_dir_music |= 0x1000
-        elif direction == data.direction.DOWN:
+        elif direction == direction.DOWN:
             map_dir_music |= 0x2000
-        elif direction == data.direction.LEFT:
+        elif direction == direction.LEFT:
             map_dir_music |= 0x3000
 
         # unknown, set when loading imperial camp from wob event tile

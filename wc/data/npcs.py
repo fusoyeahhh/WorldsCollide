@@ -1,4 +1,4 @@
-from data.npc import NPC
+from .npc import NPC
 
 class NPCs():
     NPC_COUNT = 2192

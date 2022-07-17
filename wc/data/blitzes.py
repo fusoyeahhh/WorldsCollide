@@ -1,8 +1,10 @@
-from data.blitz import Blitz
-from data.structures import DataArray
+from ..memory.space import START_ADDRESS_SNES, Bank, Reserve, Allocate, Write, Read
+from ..instruction import asm, c0
 
-from memory.space import Bank, Reserve, Allocate, Write, Read
-import instruction.asm as asm
+from . import event_bit
+from .blitz import Blitz
+from .structures import DataArray
+
 
 class Blitzes:
     LEVELS_START = 0x26f498
@@ -30,8 +32,6 @@ class Blitzes:
         self.learners_table_end = self.learners_table + len(self.learners)
 
     def write_is_learner(self):
-        import instruction.c0 as c0
-
         src = [
             asm.PHY(),
             asm.LDX(self.learners_table_end, asm.IMM16),    # offset in bank to last learner in table + 1
@@ -44,9 +44,6 @@ class Blitzes:
         self.is_learner_function = space.start_address_snes
 
     def event_check_mod(self):
-        from memory.space import START_ADDRESS_SNES
-        import instruction.c0 as c0
-
         learn_blitzes = 0x0a201
         character_recruited = c0.character_recruited + START_ADDRESS_SNES
 
@@ -123,7 +120,6 @@ class Blitzes:
     def blitzes_learned_event_bit(self):
         # when a new blitz is learned, check if 7 total now learned and if so set event bit
 
-        import data.event_bit as event_bit
         can_learn_byte = 0x1e80 + event_bit.byte(event_bit.CAN_LEARN_BUM_RUSH)
         can_learn_bit = 2 ** event_bit.bit(event_bit.CAN_LEARN_BUM_RUSH)
 

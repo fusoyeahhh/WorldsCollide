@@ -1,10 +1,12 @@
+from ..data.character.characters import Characters
+
+
 def name():
     return "Natural Magic"
 
 def parse(parser):
     natural_magic = parser.add_argument_group("Natural Magic")
 
-    from data.characters import Characters
     natural_magic_char_options = ["random", ""]
     natural_magic_char_options += [name.lower() for name in Characters.DEFAULT_NAME[ : -2]]
 

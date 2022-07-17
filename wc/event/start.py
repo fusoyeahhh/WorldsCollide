@@ -1,5 +1,6 @@
-from event.event import *
 import random
+
+from .event import *
 
 class Start(Event):
     def name(self):

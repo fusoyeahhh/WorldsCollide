@@ -1,5 +1,5 @@
-from memory.space import Bank, Allocate, Write, Read
-import instruction.asm as asm
+from ..memory.space import Bank, Allocate, Write, Read
+from . import asm
 
 def _multiply_mod():
     # 16 bit a = low a * high a

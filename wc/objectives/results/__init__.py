@@ -1,3 +1,4 @@
+"""
 results = {}
 def __init__():
     import os, importlib
@@ -10,3 +11,4 @@ def __init__():
 
         results[module.Result.NAME] = module.Result
 __init__()
+"""

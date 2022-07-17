@@ -1,11 +1,12 @@
-from constants.blitzes import id_blitz
-from constants.dances import id_dance
-from constants.lores import id_lore
-from constants.rages import id_rage
-from constants.swdtechs import id_swdtech
-from constants.spells import id_spell
-
 from collections import namedtuple
+
+from ..blitzes import id_blitz
+from ..dances import id_dance
+from ..lores import id_lore
+from ..rages import id_rage
+from ..swdtechs import id_swdtech
+from ..spells import id_spell
+
 ResultType = namedtuple("ResultType", ["id", "name", "format_string", "value_range"])
 
 category_types = {

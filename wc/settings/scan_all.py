@@ -1,6 +1,11 @@
-from memory.space import Bank, Reserve, Write, Read
-import instruction.asm as asm
-import args
+from ..memory.space import Bank, Reserve, Write, Read
+from ..instruction import asm
+from .. import args
+
+from ..data.spell.spells import Spells
+from ..data.spell.spell_names import name_id
+from ..data.character.characters import Characters
+
 
 class ScanAll:
     def __init__(self):
@@ -8,10 +13,6 @@ class ScanAll:
             self.teach_scan()
 
     def teach_scan(self):
-        from data.spells import Spells
-        from data.spell_names import name_id
-        from data.characters import Characters
-
         learned_spells_start = 0x1a6e
         scan_id = name_id["Scan"]
 

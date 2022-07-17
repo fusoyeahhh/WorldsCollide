@@ -1,15 +1,16 @@
-import args
+import logging
+import itertools
+
+from ..utils.flatten import flatten
 
 SECTION_WIDTH = 120
 COLUMN_WIDTH = 60
 
 def separator(label):
-    import logging
     logging.info("")
     logging.info(get_separator(label))
 
 def columns(lcolumn, rcolumn):
-    import logging, itertools
     for column in itertools.zip_longest(lcolumn, rcolumn, fillvalue = ""):
         logging.info(f"{column[0]:<{COLUMN_WIDTH}}{column[1]:<{COLUMN_WIDTH}}".rstrip())
 
@@ -36,7 +37,6 @@ def section_entries(label, lentries, rentries):
         lentries[-1] = lentries[-1][:-1]
         rentries[-1] = rentries[-1][:-1]
 
-    from utils.flatten import flatten
     lcolumn = flatten(lentries)
     rcolumn = flatten(rentries)
 

@@ -1,12 +1,11 @@
-from memory.space import Bank, START_ADDRESS_SNES, Reserve, Write, Read
-import instruction.asm as asm
+from ..memory.space import Bank, START_ADDRESS_SNES, Reserve, Write, Read
+from ..instruction import asm
+from ..data import event_bit
+from .. import args
+from .. import objectives
 
-from battle.scaling import scaling
-from battle.formation_flags import FormationFlag, formation_flags_address
-
-import data.event_bit as event_bit
-import objectives
-import args
+from .scaling import scaling
+from .formation_flags import FormationFlag, formation_flags_address
 
 enemy_level_address = 0x3b18
 

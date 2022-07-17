@@ -1,6 +1,7 @@
-from event.event import *
-from data.item_names import id_name
-from utils.truncated_discrete_distribution import truncated_discrete_distribution
+from ..data.item.item_names import id_name
+from ..utils.truncated_discrete_distribution import truncated_discrete_distribution
+
+from .event import *
 
 class MoblizWOB(Event):
     def name(self):

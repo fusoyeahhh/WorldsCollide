@@ -1,9 +1,7 @@
-from memory.space import START_ADDRESS_SNES, Bank, Reserve, Free, Write, Read
-import instruction.asm as asm
+from ..memory.space import START_ADDRESS_SNES, Bank, Reserve, Free, Write, Read
+from . import asm, f0
 
 def _color_absolute_addition_mod():
-    import instruction.f0 as f0
-
     # move to f0 to make room in c1
     space = Reserve(0x1fd00, 0x1fd04, "c1 color absolute addition")
     space.write(
@@ -14,8 +12,6 @@ def _color_absolute_addition_mod():
 color_absolute_addition = _color_absolute_addition_mod()
 
 def _color_absolute_subtraction_mod():
-    import instruction.f0 as f0
-
     # move to f0 to make room in c1
     space = Reserve(0x1fc99, 0x1fc9d, "c1 color absolute subtraction")
     space.write(

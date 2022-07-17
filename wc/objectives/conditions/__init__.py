@@ -1,3 +1,4 @@
+"""
 conditions = {}
 def __init__():
     import os, importlib
@@ -10,3 +11,4 @@ def __init__():
 
         conditions[module.Condition.NAME] = module.Condition
 __init__()
+"""

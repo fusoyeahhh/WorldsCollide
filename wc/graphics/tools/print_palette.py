@@ -1,5 +1,7 @@
+from ..palette_file import PaletteFile
+
+
 def print_palette(path):
-    from graphics.palette_file import PaletteFile
     palette = PaletteFile(path)
 
     print(str(palette))

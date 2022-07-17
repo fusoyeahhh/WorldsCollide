@@ -1,4 +1,7 @@
-from event.event import *
+import random
+
+from .event import *
+
 
 # TODO game can freeze, is this something i did or a bug in emulator/game?
 #      go through and when you get to the hole that brings you to three possible holes (including the one you came from)
@@ -376,8 +379,6 @@ class FloatingContinent(Event):
 
     def timer_mod(self):
         if self.args.event_timers_random:
-            import random
-
             # randomize timer between 5 and 8 minutes
             seconds = random.randint(300, 480)
 

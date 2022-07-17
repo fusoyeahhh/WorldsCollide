@@ -1,4 +1,4 @@
-from data.bosses import name_enemy
+from .bosses import name_enemy
 
 custom_exp = {
     name_enemy["BR Tentacle"]           : 40,

@@ -1,4 +1,9 @@
+import random
 from enum import Flag, unique, auto
+
+from ..utils.weighted_random import weighted_random
+
+
 @unique
 class RewardType(Flag):
     NONE = auto()
@@ -30,8 +35,6 @@ class Reward:
         return result + " (" + ', '.join(possible_strings) + ")"
 
 def choose_reward(possible_types, characters, espers, items):
-    import random
-
     all_types = [flag for flag in RewardType]
     random.shuffle(all_types)
 
@@ -78,5 +81,4 @@ def reward_slot_weights(slot_iterations, iteration):
 def weighted_reward_choice(slot_iterations, iteration):
     weights = reward_slot_weights(slot_iterations, iteration)
 
-    from utils.weighted_random import weighted_random
     return weighted_random(weights)

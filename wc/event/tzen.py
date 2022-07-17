@@ -1,4 +1,6 @@
-from event.event import *
+from random import randint
+
+from .event import *
 
 class Tzen(Event):
     def name(self):
@@ -13,7 +15,6 @@ class Tzen(Event):
         )
 
     def mod(self):
-        from random import randint
         self.wob_price = randint(1, field.RemoveGP.MAX)
         self.wor_price = randint(1, field.RemoveGP.MAX)
 

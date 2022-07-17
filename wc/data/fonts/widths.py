@@ -1,5 +1,6 @@
-from data.structures import DataArray
-from memory.space import Space
+from ..structures import DataArray
+from ...memory.space import Space
+from ..text.text1 import text_value
 
 class Widths:
     WIDTHS_START = 0x048fc0
@@ -16,8 +17,6 @@ class Widths:
         return self.widths[index][0]
 
     def width(self, string):
-        from data.text.text1 import text_value
-
         result = 0
         for character in string:
             result += self[text_value[character]]

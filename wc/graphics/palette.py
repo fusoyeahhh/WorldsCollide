@@ -1,4 +1,6 @@
-from graphics.bgr15 import BGR15
+from .bgr15 import BGR15
+from .ppm import write_ppm6
+
 
 class Palette:
     def __init__(self, data = None):
@@ -69,7 +71,6 @@ class Palette:
         OUTPUT_HEIGHT = 1
         BITS_PER_VALUE = 8
 
-        from graphics.ppm import write_ppm6
         write_ppm6(OUTPUT_WIDTH, OUTPUT_HEIGHT, BITS_PER_VALUE, self.rgb_data, output_file)
 
     def __repr__(self):

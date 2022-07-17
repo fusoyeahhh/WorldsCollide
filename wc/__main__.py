@@ -1,4 +1,6 @@
 def main():
+    pass
+    """
     from . import args
     from . import log
 
@@ -25,6 +27,7 @@ def main():
 
     data.write()
     memory.write()
+    """
 
 if __name__ == '__main__':
     main()

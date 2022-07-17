@@ -1,7 +1,12 @@
-import logging, os
+import os
+import logging
+import time
+
+from .. import version
+from .. import args
+
 from .format import *
 
-from .. import args
 name, ext = os.path.splitext(args.output_file)
 log_file = "{}{}".format(name, ".txt")
 if args.stdout_log:
@@ -10,8 +15,6 @@ if args.stdout_log:
 else:
     logging.basicConfig(filename = log_file, filemode = 'w', level = logging.INFO, format = "%(message)s")
 
-import time
-from .. import version
 log_msg =  f"Version   {version.__version__}\n"
 log_msg += f"Generated {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
 log_msg += f"Input     {os.path.basename(args.input_file)}\n"

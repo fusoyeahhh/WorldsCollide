@@ -1,7 +1,29 @@
-import data.event_bit as event_bit
-
-from instruction.event import _Instruction, _Branch, _LoadMap, EVENT_CODE_START
+import math
 from enum import IntEnum, IntFlag
+
+from ... import objectives
+from ...memory.space import Bank, Reserve, Write
+from ...constants.entities import CHARACTER_COUNT
+from ...data import event_bit, direction
+from ...data import battle_bit, event_word
+from ...data.item.item_names import name_id, id_name
+
+from ..event import _Instruction, _Branch, _LoadMap, EVENT_CODE_START
+
+from ..field import entity as field_entity
+
+from .custom import LoadEsperFound
+from .custom import _InvokeBattleType
+from .custom import RecruitCharacter
+
+from . import (
+    RETURN,
+    GAME_OVER,
+    UPDATE_PARTY_SIZE_EVENT_BITS,
+    CREATE_AVAILABLE_CHARACTERS,
+    DELETE_CHARACTERS_NOT_IN_ANY_PARTY
+)
+
 
 class NOP(_Instruction):
     def __init__(self):
@@ -53,8 +75,6 @@ class RemoveCharacterFromParties(_Instruction):
         return super().__str__(f"{self.args[0]}")
 
 def RecruitAndSelectParty(character):
-    from instruction.field.custom import RecruitCharacter
-    from instruction.field.functions import REFRESH_CHARACTERS_AND_SELECT_PARTY
     return RecruitCharacter(character), Call(REFRESH_CHARACTERS_AND_SELECT_PARTY)
 
 class SetParty(_Instruction):
@@ -109,11 +129,9 @@ class StopScreenShake(_Instruction):
 class _AddItem(_Instruction):
     def __init__(self, item):
         if isinstance(item, str):
-            from data.item_names import name_id
             self.item = name_id[item]
             self.item_name = item
         else:
-            from data.item_names import id_name
             self.item = item
             self.item_name = id_name[item]
 
@@ -466,7 +484,6 @@ class WaitForFade(_Instruction):
 
 class Pause(_Instruction):
     def __init__(self, seconds):
-        import math
         if math.isclose(seconds, 0.25):         # 15 units
             super().__init__(0x91)
         elif math.isclose(seconds, 0.50):       # 30 units
@@ -560,14 +577,13 @@ class SetParentMap(_Instruction):
         self.x = x
         self.y = y
 
-        import data.direction
-        if direction == data.direction.UP:
+        if direction == direction.UP:
             dir_arg = 2
-        elif direction == data.direction.RIGHT:
+        elif direction == direction.RIGHT:
             dir_arg = 3
-        elif direction == data.direction.DOWN:
+        elif direction == direction.DOWN:
             dir_arg = 0
-        elif direction == data.direction.LEFT:
+        elif direction == direction.LEFT:
             dir_arg = 1
 
         super().__init__(0x6c, map_id & 0xff, (map_id & 0xff00) >> 8, x, y, dir_arg)
@@ -633,7 +649,6 @@ class BranchIfEventBitSet(_Branch):
 
 class ReturnIfEventBitSet(BranchIfEventBitSet):
     def __init__(self, event_bit):
-        from instruction.field.functions import RETURN
         super().__init__(event_bit, RETURN)
 
 class BranchIfEventBitClear(_Branch):
@@ -648,7 +663,6 @@ class BranchIfEventBitClear(_Branch):
 
 class ReturnIfEventBitClear(BranchIfEventBitClear):
     def __init__(self, event_bit):
-        from instruction.field.functions import RETURN
         super().__init__(event_bit, RETURN)
 
 class BranchIfAny(_Branch):
@@ -699,12 +713,10 @@ class BranchIfAll(_Branch):
 
 class ReturnIfAny(BranchIfAny):
     def __init__(self, checks):
-        from instruction.field.functions import RETURN
         super().__init__(checks, RETURN)
 
 class ReturnIfAll(BranchIfAll):
     def __init__(self, checks):
-        from instruction.field.functions import RETURN
         super().__init__(checks, RETURN)
 
 class Branch(BranchIfEventBitClear):
@@ -733,7 +745,6 @@ class BranchIfBattleEventBitClear(_Branch):
 
 class ReturnIfBattleEventBitClear(BranchIfBattleEventBitClear):
     def __init__(self, battle_event_bit):
-        from instruction.field.functions import RETURN
         super().__init__(battle_event_bit, RETURN)
 
 class SetEventWord(_Instruction):
@@ -865,7 +876,6 @@ class _BranchIfPartySize(BranchIfEventBitSet):
         return super(BranchIfEventBitSet, self).__str__(self.size)
 
 def BranchIfPartySize(size, destination):
-    from instruction.field.functions import UPDATE_PARTY_SIZE_EVENT_BITS
     BranchIfPartySize = type("BranchIfPartySize", (_BranchIfPartySize,), {})
     return Call(UPDATE_PARTY_SIZE_EVENT_BITS), BranchIfPartySize(size, destination)
 
@@ -875,7 +885,6 @@ class LoadActiveParty(_Instruction):
         super().__init__(0xe4)
 
 def BranchIfEsperNotFound(esper, destination):
-    from instruction.field.custom import LoadEsperFound
     return LoadEsperFound(esper), BranchIfEventBitClear(event_bit.multipurpose(0), destination)
 
 class _InvokeBattle(_Instruction):
@@ -898,7 +907,6 @@ def InvokeBattle(pack, background = 0x3f, battle_sound = True, battle_animation 
     InvokeBattle = type("InvokeBattle", (_InvokeBattle,), {})
     commands = [InvokeBattle(pack, background, battle_sound, battle_animation)]
     if check_game_over:
-        from instruction.field.functions import CHECK_GAME_OVER
         commands.append(Call(CHECK_GAME_OVER))
     return commands
 
@@ -908,11 +916,9 @@ class BattleType(IntEnum):
     PINCER  = 2
     SIDE    = 3
 def InvokeBattleType(pack, battle_type, background = 0x3f, check_game_over = True):
-    from instruction.field.custom import _InvokeBattleType
     InvokeBattleType = type("InvokeBattleType", (_InvokeBattleType,), {})
     commands = [InvokeBattleType(pack, battle_type, background)]
     if check_game_over:
-        from instruction.field.functions import CHECK_GAME_OVER
         commands.append(Call(CHECK_GAME_OVER))
     return commands
 
@@ -922,7 +928,6 @@ class InvokeColiseumBattle(_Instruction):
 
 class _EntityAct(_Instruction):
     def __init__(self, entity, wait_until_complete, *actions):
-        import instruction.field.entity as field_entity
         actions = list(actions) + [field_entity.End()]
 
         self.actions_size = 0
@@ -946,7 +951,6 @@ class _EntityAct(_Instruction):
         return result
 
 def EntityAct(entity, wait_until_complete, *actions):
-        import instruction.field.entity as field_entity
         EntityAct = type("EntityAct", (_EntityAct,), {})
         return EntityAct(entity, wait_until_complete, *actions), list(actions), field_entity.End()
 
@@ -1006,3 +1010,120 @@ class DeleteRotatingPyramids(_Instruction):
 class InvokeFinalLineup(_Instruction):
     def __init__(self):
         super().__init__(0x9d)
+
+#
+# functions.py is concatenated here to avoid circular references
+#
+def _delete_all_characters_mod():
+    src = []
+    for character in range(CHARACTER_COUNT):
+        src += [
+            DeleteEntity(character),
+        ]
+    src += [
+        Return(),
+    ]
+    space = Write(Bank.CA, src, "field function delete all characters")
+    return space.start_address
+DELETE_ALL_CHARACTERS = _delete_all_characters_mod()
+
+def _refresh_characters_and_select_parties_mod(count):
+    # create all available characters, select count parties, delete characters not placed into any party
+    src = [
+        Call(DELETE_ALL_CHARACTERS),
+        Call(CREATE_AVAILABLE_CHARACTERS),
+        RefreshEntities(),
+        SelectParties(count),
+        Call(DELETE_CHARACTERS_NOT_IN_ANY_PARTY),
+        RefreshEntities(),
+        Return(),
+    ]
+    return src
+
+def _select_party_mod():
+    src = _refresh_characters_and_select_parties_mod(1)
+    space = Write(Bank.CA, src, "field function refresh characters and select party")
+    return space.start_address
+REFRESH_CHARACTERS_AND_SELECT_PARTY = _select_party_mod()
+
+def _select_two_parties_mod():
+    src = _refresh_characters_and_select_parties_mod(2)
+    space = Write(Bank.CA, src, "field function refresh characters and select two parties")
+    return space.start_address
+REFRESH_CHARACTERS_AND_SELECT_TWO_PARTIES = _select_two_parties_mod()
+
+def _select_three_parties_mod():
+    src = _refresh_characters_and_select_parties_mod(3)
+    space = Write(Bank.CA, src, "field function refresh characters and select three parties")
+    return space.start_address
+REFRESH_CHARACTERS_AND_SELECT_THREE_PARTIES = _select_three_parties_mod()
+
+def _toggle_party_magitek_mod():
+    src = [
+        ToggleStatusEffects(field_entity.PARTY0, Status.MAGITEK),
+        ToggleStatusEffects(field_entity.PARTY1, Status.MAGITEK),
+        ToggleStatusEffects(field_entity.PARTY2, Status.MAGITEK),
+        ToggleStatusEffects(field_entity.PARTY3, Status.MAGITEK),
+        Return(),
+    ]
+    space = Write(Bank.CA, src, "field function toggle party magitek")
+    return space.start_address
+TOGGLE_PARTY_MAGITEK = _toggle_party_magitek_mod()
+
+def _original_check_game_over_mod():
+    src = [
+        ReturnIfBattleEventBitClear(battle_bit.PARTY_ANNIHILATED),
+        Call(GAME_OVER),
+        Return(),
+    ]
+    space = Write(Bank.CA, src, "field function original check game over")
+    return space.start_address
+ORIGINAL_CHECK_GAME_OVER = _original_check_game_over_mod()
+
+def _check_game_over_mod():
+    src = [
+        # bababreath can remove the party leader and cause the party to be invisible after a battle
+        # refresh objects and update party leader to prevent invisible party
+        RefreshEntities(),
+        UpdatePartyLeader(),
+
+        ReturnIfBattleEventBitClear(battle_bit.PARTY_ANNIHILATED),
+        Call(GAME_OVER),
+        Return(),
+    ]
+    space = Write(Bank.CA, src, "field function check game over")
+    check_game_over = space.start_address
+
+    # replace original game over check with bababreath safe one
+    space = Reserve(0xa5ea9, 0xa5eb2, "field function call check game over", NOP())
+    space.write(
+        Call(check_game_over),
+        Return(),
+    )
+    return check_game_over
+CHECK_GAME_OVER = _check_game_over_mod()
+
+class CheckObjectives(Call):
+    def __init__(self):
+        src = []
+        for objective in objectives:
+            src += [
+                objective.check_complete.field(),
+            ]
+        src += [
+            Return(),
+        ]
+        space = Write(Bank.CA, src, "field check objectives")
+        CheckObjectives.__init__ = lambda self : super().__init__(space.start_address)
+        self.__init__()
+
+class FinishCheck(Call):
+    def __init__(self):
+        src = [
+            IncrementEventWord(event_word.CHECKS_COMPLETE),
+            CheckObjectives(),
+            Return(),
+        ]
+        space = Write(Bank.CA, src, "field function finish check")
+        FinishCheck.__init__ = lambda self : super().__init__(space.start_address)
+        self.__init__()

@@ -1,5 +1,5 @@
-from data.party_battle_script import PartyBattleScript
-from data.structures import DataArray
+from .party_battle_script import PartyBattleScript
+from .structures import DataArray
 
 class PartyBattleScripts:
     DATA_START = 0x10fd00

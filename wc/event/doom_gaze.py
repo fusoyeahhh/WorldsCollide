@@ -1,4 +1,7 @@
-from event.event import *
+from .event import *
+
+from ..instruction import asm
+
 
 class DoomGaze(Event):
     def name(self):
@@ -32,8 +35,6 @@ class DoomGaze(Event):
         )
 
     def doom_gaze_battle_mod(self):
-        import instruction.asm as asm
-
         boss_pack_id = self.get_boss("Doom Gaze")
         boss_formation_id = self.enemies.packs.get_formations(boss_pack_id)[0]
 

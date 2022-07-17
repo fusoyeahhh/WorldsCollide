@@ -1,6 +1,11 @@
-from data.character_sprites import PORTRAIT_CHARACTERS, SPRITE_CHARACTERS, DEFAULT_CHARACTER_PORTRAITS, DEFAULT_CHARACTER_SPRITES
-from data.character_palettes import SPRITE_PALETTE_COUNT, DEFAULT_CHARACTER_PALETTES, DEFAULT_CHARACTER_SPRITE_PALETTES
-from data.characters import Characters
+from ..data.character.character_sprites import PORTRAIT_CHARACTERS, SPRITE_CHARACTERS, DEFAULT_CHARACTER_PORTRAITS, DEFAULT_CHARACTER_SPRITES
+from ..data.character.character_palettes import SPRITE_PALETTE_COUNT, DEFAULT_CHARACTER_PALETTES, DEFAULT_CHARACTER_SPRITE_PALETTES
+from ..data.character.characters import Characters
+
+#import graphics.palettes.palettes as palettes
+#import graphics.portraits.portraits as portraits
+#import graphics.sprites.sprites as sprites
+
 
 def parse(parser):
     graphics = parser.add_argument_group("Graphics")
@@ -11,10 +16,6 @@ def parse(parser):
     graphics.add_argument("-cspp", "--character-sprite-palettes", type = str, help = "Character sprite palette indices")
 
 def process(args):
-    import graphics.palettes.palettes as palettes
-    import graphics.portraits.portraits as portraits
-    import graphics.sprites.sprites as sprites
-
     if args.character_names is not None:
         args.names = args.character_names.split('.')
         if len(args.names) != Characters.CHARACTER_COUNT:
@@ -43,8 +44,6 @@ def process(args):
 
     args.portraits = []
     if args.character_portraits:
-        import os
-
         args.portrait_ids = [int(portrait_id) for portrait_id in args.character_portraits.split('.')]
         if len(PORTRAIT_CHARACTERS) != len(args.portrait_ids):
             raise ValueError(f"Invalid number of portrait arguments ({len(args.portrait_ids)} should be {len(PORTRAIT_CHARACTERS)})")

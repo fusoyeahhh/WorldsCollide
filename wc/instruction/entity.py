@@ -1,5 +1,6 @@
-from instruction.event import _Instruction
 from enum import IntEnum
+
+from .event import _Instruction
 
 class End(_Instruction):
     def __init__(self):

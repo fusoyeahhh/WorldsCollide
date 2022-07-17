@@ -1,4 +1,6 @@
-from event.event import *
+import random
+
+from .event import *
 
 class OperaHouseWOB(Event):
     def name(self):
@@ -161,8 +163,6 @@ class OperaHouseWOB(Event):
         )
 
         if self.args.event_timers_random:
-            import random
-
             # randomize timer between 4 and 7 minutes
             seconds = random.randint(240, 420)
 

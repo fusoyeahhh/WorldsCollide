@@ -1,9 +1,8 @@
-from memory.space import START_ADDRESS_SNES, Bank, Write
-import instruction.asm as asm
-import instruction.f0 as f0
-
-from enum import IntEnum
 from collections import namedtuple
+
+from ..memory.space import START_ADDRESS_SNES, Bank, Write
+from ..instruction import asm, f0
+from ..data.text.text2 import text_value
 
 WIDTH = 26  # max characters per row
 HEIGHT = 10 # rows visible on screen
@@ -180,8 +179,6 @@ class ScrollArea:
         self.draw_character = space.start_address
 
     def draw_line_mod(self):
-        from data.text.text2 import text_value
-
         src = []
         for line in self.lines:
             for index, character in enumerate(line.text):

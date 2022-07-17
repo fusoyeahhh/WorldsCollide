@@ -1,5 +1,5 @@
-from memory.space import Bank, Write
-import instruction.asm as asm
+from ..memory.space import Bank, Write
+from ..instruction import asm
 
 class CheckObjectives(asm.JSR):
     def __init__(self):

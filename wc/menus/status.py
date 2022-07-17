@@ -1,6 +1,6 @@
-from memory.space import Bank, Reserve, Allocate
-import instruction.asm as asm
-import args
+from ..memory.space import Bank, Reserve, Allocate
+from ..instruction import asm
+from .. import args
 
 class StatusMenu:
     def __init__(self, characters):

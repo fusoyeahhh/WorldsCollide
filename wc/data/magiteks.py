@@ -1,8 +1,8 @@
-from data.magitek import Magitek
-from data.ability_data import AbilityData
-from data.structures import DataBits, DataArray
+from .magitek import Magitek
+from .ability_data import AbilityData
+from .structures import DataBits, DataArray
 
-from memory.space import Bank, Reserve, Allocate, Write
+#from ..memory.space import Bank, Reserve, Allocate, Write
 
 class Magiteks:
     MAGITEK_COUNT = 8
@@ -11,7 +11,6 @@ class Magiteks:
 
     NAMES_START = 0x26f9ad 
     NAMES_END = 0x26f9fc
-    NAME_SIZE = 10
 
     ABILITY_DATA_START = 0x0471ea
     ABILITY_DATA_END = 0x047259
@@ -28,7 +27,7 @@ class Magiteks:
         self.rom = rom
         self.args = args
 
-        self.name_data = DataArray(self.rom, self.NAMES_START, self.NAMES_END, self.NAME_SIZE)
+        self.name_data = DataArray(self.rom, self.NAMES_START, self.NAMES_END, Magitek.NAME_SIZE)
         self.ability_data = DataArray(self.rom, self.ABILITY_DATA_START, self.ABILITY_DATA_END, AbilityData.DATA_SIZE)
         self.other_char_magitek_attacks = DataArray(self.rom, self.OTHER_CHAR_MAGITEK_ATTACKS_START, self.OTHER_CHAR_MAGITEK_ATTACKS_END, self.MAGITEK_ATTACKS_SIZE)
 

@@ -1,9 +1,8 @@
-from memory.space import Bank, Write
-import instruction.asm as asm
-import instruction.field as field
-
-import data.event_word as event_word
-from objectives._cached_function import _CachedFunction
+from ..memory.space import Bank, Write
+from ..instruction import asm
+from ..instruction.field import instructions as field
+from ..data import event_word
+from ..objectives._cached_function import _CachedFunction
 
 class Field(_CachedFunction, field.Call):
     def __init__(self, *args, **kwargs):

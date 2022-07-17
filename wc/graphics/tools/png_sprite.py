@@ -1,5 +1,13 @@
+import itertools
+
+from PIL import Image
+
+from .. import poses
+from ..palette import Palette
+from ..sprite_tile import SpriteTile
+from ..sprite import Sprite
+
 def get_palette(image):
-    from graphics.palette import Palette
 
     RGB_CHANNELS = 3
     PALETTE_COLORS = 16
@@ -16,14 +24,12 @@ def get_palette(image):
     return palette
 
 def get_spritesheet_tile_indices(full):
-    import graphics.poses as poses
     MIN_SPRITESHEET_ROWS = 5
     MIN_SPRITESHEET_COLS = 8
     SPRITESHEET_POSES = []
     for row in range(MIN_SPRITESHEET_ROWS):
         SPRITESHEET_POSES.append(list(range(row * MIN_SPRITESHEET_COLS, (row + 1) * MIN_SPRITESHEET_COLS)))
 
-    import itertools
     tile_indices = []
     for row in SPRITESHEET_POSES:
         for tile_row in zip(*[poses.CHARACTER[pose_row] for pose_row in row]):
@@ -48,8 +54,6 @@ def get_spritesheet_tile_indices(full):
     return tile_indices
 
 def get_tiles(image):
-    from graphics.sprite_tile import SpriteTile
-
     image_color_indices = image.getdata()
 
     # does the spritesheet include riding and horizontal dead poses?
@@ -98,16 +102,13 @@ def write_sprite(output_prefix, sprite, tile_indices):
         output.write(bytes(sprite.data))
 
 def convert(image_path):
-    from PIL import Image
     image = Image.open(image_path)
 
-    import os
     output_prefix = os.path.splitext(image_path)[0]
 
     palette = get_palette(image)
     write_palette(output_prefix, palette)
 
-    from graphics.sprite import Sprite
     tiles, tile_indices = get_tiles(image)
     sprite = Sprite(tiles, palette)
     write_sprite(output_prefix, sprite, tile_indices)

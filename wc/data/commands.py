@@ -1,6 +1,14 @@
-from constants.commands import *
 import random
-import args
+
+from ..constants.commands import *
+from .. import objectives
+
+from .character import characters_asm
+from .character import Character
+
+#import args
+
+#from log import section, format_option
 
 class Commands:
     def __init__(self, characters):
@@ -26,7 +34,6 @@ class Commands:
                 pass
 
         # if suplex a train condition exists, guarantee blitz
-        import objectives
         blitz_id = name_id["Blitz"]
         if objectives.suplex_train_condition_exists and blitz_id not in args.character_commands:
             # try to replace a random "Random" or "Random Unique" command with Blitz (even if blitz in excluded commands)
@@ -62,46 +69,37 @@ class Commands:
                 command_set.discard(args.character_commands[index])
 
         # apply the commands to the characters
-        from data.characters import Characters
         for index in range(len(args.character_commands[ : -2])):
             self.characters[index].commands[1] = args.character_commands[index]
-        self.characters[Characters.GAU].commands[0] = args.character_commands[-2] # rage
-        self.characters[Characters.GAU].commands[1] = args.character_commands[-1] # leap
+        self.characters[Character.GAU].commands[0] = args.character_commands[-2] # rage
+        self.characters[Character.GAU].commands[1] = args.character_commands[-1] # leap
 
     def shuffle_commands(self):
-        from data.characters import Characters
-
         commands = []
         for index in range(len(COMMAND_OPTIONS) - 1):
             commands.append(self.characters[index].commands[1])
-        commands.append(self.characters[Characters.GAU].commands[0]) # rage
+        commands.append(self.characters[Character.GAU].commands[0]) # rage
 
         random.shuffle(commands)
 
         for index in range(len(COMMAND_OPTIONS) - 1):
             self.characters[index].commands[1] = commands[index]
-        self.characters[Characters.GAU].commands[0] = commands[-1] # rage
+        self.characters[Character.GAU].commands[0] = commands[-1] # rage
 
     def mod(self):
-        import data.characters_asm as characters_asm
-        from data.characters import Characters
-
         if args.commands:
             self.mod_commands()
         if args.shuffle_commands:
             self.shuffle_commands()
 
         if args.commands or args.shuffle_commands:
-            characters_asm.update_morph_character(self.characters[ : Characters.CHARACTER_COUNT])
+            characters_asm.update_morph_character(self.characters[ : Character.CHARACTER_COUNT])
 
     def log(self):
-        from log import section, format_option
-        from data.characters import Characters
-
         lcolumn = []
         for index, option in enumerate(COMMAND_OPTIONS[ : -2]):
             lcolumn.append(format_option(option, id_name[self.characters[index].commands[1]]))
-        lcolumn.append(format_option(COMMAND_OPTIONS[-2], id_name[self.characters[Characters.GAU].commands[0]]))
-        lcolumn.append(format_option(COMMAND_OPTIONS[-1], id_name[self.characters[Characters.GAU].commands[1]]))
+        lcolumn.append(format_option(COMMAND_OPTIONS[-2], id_name[self.characters[Character.GAU].commands[0]]))
+        lcolumn.append(format_option(COMMAND_OPTIONS[-1], id_name[self.characters[Character.GAU].commands[1]]))
 
         section("Commands", lcolumn, [])

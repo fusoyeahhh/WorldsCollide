@@ -1,4 +1,7 @@
-from event.event import *
+from ..instruction import asm
+
+from .event import *
+
 
 class SealedGate(Event):
     def name(self):
@@ -42,8 +45,6 @@ class SealedGate(Event):
         self.log_reward(self.reward)
 
     def world_map_mod(self):
-        import instruction.asm as asm
-
         # calls to remove from minimap
         space = Reserve(0x2e85dc, 0x2e85de, "sealed gate call remove from minimap", asm.NOP())
         space = Reserve(0x2e886f, 0x2e8871, "sealed gate call remove from minimap", asm.NOP())

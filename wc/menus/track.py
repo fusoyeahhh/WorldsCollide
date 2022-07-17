@@ -1,5 +1,7 @@
-from memory.space import Bank, Write, Reserve, Allocate, Read
-import instruction.asm as asm
+from ..memory.space import Bank, Write, Reserve, Allocate, Read
+from ..instruction import asm
+from ..data import text
+
 
 class TrackMenu:
     MENU_NUMBER = 10
@@ -52,8 +54,6 @@ class TrackMenu:
         )
 
     def main_menu_mod(self):
-        import data.text as text
-
         # increase main menu options submenu size to allow track to fit
         space = Reserve(0x331bb, 0x331be, "main menu options submenu layout")
         space.write(
@@ -133,8 +133,6 @@ class TrackMenu:
         space.write(8)
 
     def draw_options_mod(self):
-        import data.text as text
-
         text_positions = [
             ("Objectives", 0x798f),
             ("Checks", 0x7a0f),

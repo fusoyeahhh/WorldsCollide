@@ -1,9 +1,8 @@
-from memory.space import Bank, Reserve, Write
-import instruction.asm as asm
-import instruction.c2 as c2
+from ..memory.space import Bank, Reserve, Write
+from ..instruction import asm
 
-from battle.check_dragon_boss import CheckDragonBoss
-from battle.check_objectives import CheckObjectives
+from .check_dragon_boss import CheckDragonBoss
+from .check_objectives import CheckObjectives
 
 class _EndChecks:
     def __init__(self):

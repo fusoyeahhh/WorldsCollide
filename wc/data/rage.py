@@ -1,4 +1,6 @@
 class Rage():
+    ATTACKS_DATA_SIZE = 2
+
     def __init__(self, id, attack_data):
         self.id = id
 
@@ -6,8 +8,7 @@ class Rage():
         self.attack2 = attack_data[1]
 
     def attack_data(self):
-        from data.rages import Rages
-        data = [0x00] * Rages.ATTACKS_DATA_SIZE
+        data = [0x00] * self.ATTACKS_DATA_SIZE
 
         data[0] = self.attack1
         data[1] = self.attack2

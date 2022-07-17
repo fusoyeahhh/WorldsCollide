@@ -1,4 +1,4 @@
-from event.event import *
+from .event import *
 
 # TODO: only trigger this event in wob
 

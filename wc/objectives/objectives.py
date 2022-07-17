@@ -1,18 +1,14 @@
-import args
+from .objective import Objective
 
-from objectives.results import results
-from objectives.conditions import conditions
-from objectives.objective import Objective
-
-from objectives.result_dict import ResultDict
+from .result_dict import ResultDict
 
 class Objectives:
     results = ResultDict()
 
-    def __init__(self):
+    def __init__(self, objectives):
         self.objectives = []
         self.suplex_train_condition_exists = False
-        for index in range(len(args.objectives)):
+        for index in range(len(objectives)):
             objective = Objective(index)
             self.objectives.append(objective)
 

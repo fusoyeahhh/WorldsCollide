@@ -1,3 +1,5 @@
+import os
+
 ORIGINAL_COUNT = 7
 
 id_palette = {
@@ -141,8 +143,6 @@ id_palette = {
 }
 
 def get_path(id_):
-    import os
-
     if id_ < ORIGINAL_COUNT:
         subdir = "original"
     else:

@@ -1,19 +1,21 @@
-from memory.space import Bank, Space, Reserve, Allocate, Free, Write, Read
-import data.direction as direction
+from ..memory.space import Bank, Space, Reserve, Allocate, Free, Write, Read
+from ..data import (
+    direction,
+    event_bit,
+    event_word,
+    npc_bit,
+    battle_bit
+)
 
-import data.event_bit as event_bit
-import data.event_word as event_word
-import data.npc_bit as npc_bit
-import data.battle_bit as battle_bit
-
-import instruction.asm as asm
-import instruction.field as field
-import instruction.field.entity as field_entity
-import instruction.world as world
-import instruction.vehicle as vehicle
-
-from instruction.event import EVENT_CODE_START
-from event.event_reward import RewardType, Reward
+from ..instruction import (
+    asm,
+    field,
+    world,
+    vehicle,
+)
+from ..instruction.field import entity as field_entity
+from ..instruction.event import EVENT_CODE_START
+from .event_reward import RewardType, Reward
 
 class Event():
     def __init__(self, events, rom, args, dialogs, characters, items, maps, enemies, espers, shops):

@@ -1,10 +1,12 @@
-from memory.space import Bank, Reserve, Write, Read
-from instruction.event import _Instruction
-import instruction.asm as asm
-import instruction.c0 as c0
-
 from enum import IntEnum
-from instruction.field.custom import _set_opcode_address
+
+from ....memory.space import Bank, Reserve, Write, Read
+from ....instruction.event import _Instruction
+from ....instruction import asm, c0
+
+from ....instruction.event import EVENT_CODE_START
+from ....instruction.field import RETURN
+from ....instruction.field.custom import _set_opcode_address
 
 # set graphics for last npc interacted with using y button
 # if sprite, palette, or vehicle argument is 0xff, they will remain unmodified (TODO: 0xff restore original values?)
@@ -155,8 +157,6 @@ class YNPCEffect(_Instruction):
         space = Write(Bank.C0, src, "custom y_npc_effect delete")
         delete = space.start_address
 
-        from instruction.event import EVENT_CODE_START
-        from instruction.field.functions import RETURN
         return_event = (RETURN - EVENT_CODE_START).to_bytes(3, "little")
         src = [
             asm.JSR(get_npc_id, asm.ABS),

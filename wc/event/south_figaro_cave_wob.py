@@ -1,4 +1,7 @@
-from event.event import *
+from ..data.map.map_event import MapEvent
+
+from .event import *
+
 
 class SouthFigaroCaveWOB(Event):
     def name(self):
@@ -138,7 +141,6 @@ class SouthFigaroCaveWOB(Event):
         space = Write(Bank.CA, src, "figaro cave move airship to town side")
         move_airship_to_town_side = space.start_address
 
-        from data.map_event import MapEvent
         self.maps.delete_short_exit(0x046, 47, 40)
         new_event = MapEvent()
         new_event.x = 47

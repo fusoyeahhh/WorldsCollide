@@ -1,7 +1,6 @@
-from memory.space import Bank, Write
-import instruction.asm as asm
-import instruction.c2 as c2
-import args
+from ..memory.space import Bank, Write
+from .. import args
+from ..instruction import asm, c2
 
 class ScalingFunctions():
     def __init__(self):

@@ -1,8 +1,9 @@
-from data.dance import Dance
-from data.structures import DataArray
+from .dance import Dance
+from .structures import DataArray
 
-from memory.space import Bank, Reserve, Allocate, Write, Read
-import instruction.asm as asm
+from ..memory.space import Bank, Reserve, Allocate, Write, Read
+from ..instruction import asm
+
 
 class Dances:
     DANCE_COUNT = 8
@@ -13,7 +14,6 @@ class Dances:
 
     NAMES_START = 0x26ff9d
     NAMES_END = 0x26ffff
-    NAME_SIZE = 12
 
     ABILITY_NAMES_START = 0x26f881
     ABILITY_NAME_SIZE = 10
@@ -24,7 +24,7 @@ class Dances:
         self.characters = characters
 
         self.data = DataArray(self.rom, self.DATA_START, self.DATA_END, self.DATA_SIZE)
-        self.name_data = DataArray(self.rom, self.NAMES_START, self.NAMES_END, self.NAME_SIZE)
+        self.name_data = DataArray(self.rom, self.NAMES_START, self.NAMES_END, Dance.NAME_SIZE)
 
         self.dances = []
         for dance_index in range(len(self.data)):

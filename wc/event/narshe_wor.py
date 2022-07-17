@@ -1,4 +1,6 @@
-from event.event import *
+from ..data.npc import NPC
+
+from .event import *
 
 class NarsheWOR(Event):
     def name(self):
@@ -105,7 +107,6 @@ class NarsheWOR(Event):
     def weapon_shop_mod(self, dialog_first_choice_text, reward_instructions):
         space = Reserve(0xc0b24, 0xc0b26, "narshe wor i wanted to give you this", field.NOP())
 
-        import data.text
         # item names stored as TEXT2, dialogs are TEXT1
         item_name = data.text.convert(self.items.get_name(self.item), data.text.TEXT1)
         self.dialogs.set_text(1519, dialog_first_choice_text + "<line><choice> Make it “" + item_name + "”<end>")
@@ -150,7 +151,6 @@ class NarsheWOR(Event):
         )
 
     def esper_room_mod(self, esper_item_instructions):
-        from data.npc import NPC
         guard_npc = NPC()
         guard_npc.x = 74
         guard_npc.y = 40
@@ -208,7 +208,6 @@ class NarsheWOR(Event):
         magicite_npc.split_sprite = 1
         magicite_npc.direction = direction.DOWN
 
-        import data.text
         item_name = data.text.convert(self.items.get_name(item), data.text.TEXT1) # item names are stored as TEXT2, dialogs are TEXT1
         dialog_text = "This gives off an eerie aura!<line><choice> Leave it “" + item_name + "”"
 
