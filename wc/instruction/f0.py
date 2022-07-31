@@ -1,12 +1,9 @@
-#import random
-
 from ..data.bosses import final_battle_formation_name
 from ..data.bosses import dragon_formation_name
 from ..data.bosses import normal_formation_name
 
 from ..memory.space import START_ADDRESS_SNES, Bank, Reserve, Allocate, Write, Read
 from . import asm
-#import args
 
 def _divide_mod():
     # 16 bit a = 16 bit a // 8 bit x
